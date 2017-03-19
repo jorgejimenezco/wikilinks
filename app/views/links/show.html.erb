@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2><%= @link.title %></h2>
+      <h3><%= @link.description %></h3>
+      <h3><%= @link.url %></h3>
+      <h3><%= @link.category %></h3>
+
+
+    </div>
+  </div>
+<div class="row">
+    <div class="col-md-12 text-right">
+
+    <%= link_to 'Veiw All', links_path, class: 'btn btn-primary' %>
+    </div>
+</div>

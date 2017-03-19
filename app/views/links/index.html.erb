@@ -1,0 +1,43 @@
+<h1>WIKILINKS</h1>
+
+
+<div class="row">
+<div class="col-xs-12">
+   <%= link_to 'New link ', new_link_path, class: 'btn btn-default pull-right' %>
+</div>
+</div>
+
+<div class="row">
+  <div class="container">
+  <div class="col-xs-11">
+    <h1>Links links</h1>
+
+    <table class="table">
+      <tr>
+        <th>Title</th>
+        <th>descriptio</th>
+        <th>links</th>
+        <th>category</th>
+      </tr>
+      <% @links.each do |link| %>
+      <tr>
+        <td><%= link_to link.title, link_path(link) %>
+        </td>
+        <td><%= link.title %></td>
+        <td><%= truncate(link.title, :length => 80) %></td>
+        <td>
+          <%= link_to link_path(link)  do %>  <i class="fa fa-eye" aria-hidden="true"></i><% end %>
+              |  <%= link_to edit_link_path(link) do %> <i class="fa fa-pencil-square" aria-hidden="true"></i> <%end%>
+
+             | <%= link_to link , :method => :DELETE , data: { confirm: "Are you sure you   want to delete this entry?" } do  %>
+               <i class="fa fa-trash" aria-hidden="true"></i>
+          <%end%>
+
+
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+</div>
