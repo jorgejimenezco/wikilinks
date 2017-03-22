@@ -1,60 +1,77 @@
 class LinksController < ApplicationController
-  def index
-      @links = Link.all
-  end
+before_action :authenticate_user! 
 
   def new
-    @link = Link.new
-  end
+     @link = Link.new
 
-  def show
-    @link = Link.find(params[:id])
   end
+#---------------------------------------------------------------
+# metodo create con alertas de creación (success && failure)
 
   def create
     @link = Link.new(link_params)
+#--------------------------------------------------------------
 
     if @link.save
-      flash[:notice] = 'Link was created successfully'
+      flash[:notice] = 'EL lost ha sido creado con éxito'
       redirect_to links_path
     else
-      flash[:alert] = ' Failed, Link was not created'
+      flash[:alert] = 'tu Link no ha sido creado con exito'
       render :new
     end
+#-----------------------------------------
   end
-
+#-------------------------------------------------------------
   def edit
-    @link = Link.find(params[:id])
+     @link = Link.find(params[:id])
   end
 
   def update
     @link = Link.find(params[:id])
 
-  if @link.update(link_params)
-    flash[:notice] = 'Post has been updated successfully'
-    redirect_to links_path
-  else
-    flash[:alert] = 'Failed, Post has not been updated'
-    render :edit
+     if   @link.update(link_params)
+      flash.notice = "link '#{@link.title}' Updated!"
+      redirect_to link_path(@link)
+    else
+      flash.alert = "sometihing it is not right with the link '#{@link}'"
+    end
+
   end
 
   def destroy
     @link = Link.delete(params[:id])
-  flash[:notice] = 'Link has been eliminated'
-  redirect_to link_path
+     flash[:notice] = "the Link #{@link} it is no longer avaliable."
+    redirect_to links_path
   end
-end
+
+  def show
+     @link = Link.find(params[:id])
+
+     @Link = Link.new
+
+  end
+
+  def index
+    @links = Link.all
+  end
+
 
 
 private
 
-  def link_params
-    params.require(:link).permit(:title, :description, :url)
-  end
 
+#-------------------------------------------------------------------------
+#method that ask for the admin user_signed_in.
   def is_admin?
     unless current_user.admin?
-    flash[:alert] = 'You do not have permission to access'
+          flash[:alert] = 'you can not access this rute'
+          redirect_to root_path
+        end
+      end
+
+  #---------------------------------------------------------------------------------------------------
+    def link_params #Seguridad para que el usuario no pueda enviar más información de la requerida
+        params.require(:link).permit(:title, :description, :category, :url )
     end
-  end
+#------------------------------------------------------------------------------------------------------
 end
